@@ -28,6 +28,8 @@ use ShoppinPal\Vend\Api\V2\Suppliers as SuppliersV2;
 use ShoppinPal\Vend\Api\V2\Tags as TagsV2;
 use ShoppinPal\Vend\Api\V2\Taxes as TaxesV2;
 use ShoppinPal\Vend\Api\V2\Versions as VersionsV2;
+use ShoppinPal\Vend\Api\V2\Search as SearchV2;
+use ShoppinPal\Vend\Api\V2\Users as UsersV2;
 use ShoppinPal\Vend\Auth\AuthHelper;
 use ShoppinPal\Vend\Auth\OAuth;
 use YapepBase\Config;
@@ -478,6 +480,8 @@ class Factory
         switch ($version) {
             case self::API_VERSION_0:
                 return new UsersV0($this->getAuthHelper(), $this->getDomainPrefix());
+            case self::API_VERSION_2:
+                return new UsersV2($this->getAuthHelper(), $this->getDomainPrefix());
 
             default:
                 throw new ParameterException('Unknown version: ' . $version);
@@ -525,4 +529,26 @@ class Factory
                 throw new ParameterException('Unknown version: ' . $version);
         }
     }
+
+    /**
+     * Returns a Search API handler.
+     *
+     * @param string $version The version to use. {@uses self::API_VERSION_*}
+     *
+     * @return SearchV2
+     *
+     * @throws ParameterException If the version is invalid.
+     * @throws \YapepBase\Exception\ConfigException If the required configuration params are not set.
+     */
+    public function getSearchApi($version)
+    {
+        switch ($version) {
+            case self::API_VERSION_2:
+                return new SearchV2($this->getAuthHelper(), $this->getDomainPrefix());
+
+            default:
+                throw new ParameterException('Unknown version: ' . $version);
+        }
+    }
+
 }
