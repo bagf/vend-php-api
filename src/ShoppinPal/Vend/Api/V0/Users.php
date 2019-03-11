@@ -30,4 +30,14 @@ class Users extends V0ApiAbstract
 
         return $users;
     }
+
+    public function get($userId)
+    {
+        $request = $this->getAuthenticatedRequestForUri('api/users/' . $userId);
+        $request->setMethod(CurlHttpRequest::METHOD_GET);
+
+        $result = $this->sendRequest($request, 'user get single');
+
+        return new User($result['data'], User::UNKNOWN_PROPERTY_IGNORE, true);
+    }
 }
